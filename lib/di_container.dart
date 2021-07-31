@@ -16,6 +16,7 @@ import 'package:recyminer_app/data/repository/product_repo.dart';
 import 'package:recyminer_app/data/repository/profile_repo.dart';
 import 'package:recyminer_app/data/repository/search_repo.dart';
 import 'package:recyminer_app/data/repository/splash_repo.dart';
+import 'package:recyminer_app/data/repository/statistics_repo.dart';
 import 'package:recyminer_app/provider/auth_provider.dart';
 import 'package:recyminer_app/provider/banner_provider.dart';
 import 'package:recyminer_app/provider/cart_provider.dart';
@@ -33,6 +34,7 @@ import 'package:recyminer_app/provider/profile_provider.dart';
 import 'package:recyminer_app/provider/search_provider.dart';
 import 'package:recyminer_app/provider/settings_provider.dart';
 import 'package:recyminer_app/provider/splash_provider.dart';
+import 'package:recyminer_app/provider/statistics_provider.dart';
 import 'package:recyminer_app/provider/theme_provider.dart';
 import 'package:recyminer_app/utill/app_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -69,6 +71,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => BannerRepo(dioClient: sl()));
   sl.registerLazySingleton(() => NotificationRepo(dioClient: sl()));
   sl.registerLazySingleton(() => IbmCloudRepo());
+  sl.registerLazySingleton(() => StatisticsRepo(dioClient: sl()));
 
   // Provider
   sl.registerFactory(() => ThemeProvider(sharedPreferences: sl()));
@@ -92,6 +95,7 @@ Future<void> init() async {
   sl.registerFactory(() => SettingsProvider(sharedPreferences: sl()));
   sl.registerFactory(
       () => IbmCloudProvider(ibmCloudRepo: sl(), sharedPreferences: sl()));
+  sl.registerFactory(() => StatisticsProvider(statisticsRepo: sl()));
 
   // External
   final sharedPreferences = await SharedPreferences.getInstance();

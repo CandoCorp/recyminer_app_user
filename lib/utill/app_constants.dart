@@ -60,6 +60,7 @@ class AppConstants {
   static const String DELIVER_MAN_REVIEW_URI =
       '/api/v1/delivery-man/reviews/submit';
   static const String CREATE_PRODUCT = '/api/v1/products/create';
+  static const String STATISTICS = '/api/v1/statistics';
 
   // Shared Key
   static const String THEME = 'theme';

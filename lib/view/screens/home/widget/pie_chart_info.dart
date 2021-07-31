@@ -6,19 +6,22 @@
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:recyminer_app/data/model/other/category_area.dart';
 import 'package:recyminer_app/helper/responsive_helper.dart';
-import 'package:recyminer_app/provider/banner_provider.dart';
+import 'package:recyminer_app/provider/statistics_provider.dart';
 import 'package:recyminer_app/utill/dimensions.dart';
 import 'package:recyminer_app/view/base/title_widget.dart';
 
-/// Example that shows how to build a datum legend that shows measure values.
-///
-/// Also shows the option to provide a custom measure formatter.
-class PieChartInfo extends StatelessWidget {
+class PieChartInfo extends StatefulWidget {
+  @override
+  _PieChartInfo createState() => _PieChartInfo();
+}
+
+class _PieChartInfo extends State<PieChartInfo> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<BannerProvider>(
-      builder: (context, banner, child) {
+    return Consumer<StatisticsProvider>(
+      builder: (context, statisticsProvider, child) {
         return Column(
           children: [
             Divider(color: Colors.grey),
@@ -37,7 +40,14 @@ class PieChartInfo extends StatelessWidget {
                   top: Dimensions.PADDING_SIZE_LARGE,
                   bottom: Dimensions.PADDING_SIZE_SMALL),
               child: new charts.PieChart(
-                _createSampleData(),
+                [
+                  new charts.Series<CategoryArea, String>(
+                    id: 'Categories',
+                    domainFn: (CategoryArea sales, _) => sales.category,
+                    measureFn: (CategoryArea sales, _) => sales.percent,
+                    data: statisticsProvider.categoryArea,
+                  )
+                ],
                 animate: true,
                 // Add the legend behavior to the chart to turn on legends.
                 // This example shows how to optionally show measure and provide a custom
@@ -77,27 +87,14 @@ class PieChartInfo extends StatelessWidget {
   }
 
   /// Create series list with one series
-  static List<charts.Series<CategoryArea, String>> _createSampleData() {
-    final data = [
-      new CategoryArea(10, "Plastic"),
-      new CategoryArea(10, "Paperboard"),
-      new CategoryArea(10, "Glass"),
-      new CategoryArea(70, "Organic"),
-    ];
-
-    return [
-      new charts.Series<CategoryArea, String>(
-        id: 'Categories',
-        domainFn: (CategoryArea sales, _) => sales.category,
-        measureFn: (CategoryArea sales, _) => sales.percent,
-        data: data,
-      )
-    ];
-  }
-}
-
-class CategoryArea {
-  final int percent;
-  final String category;
-  CategoryArea(this.percent, this.category);
+//  List<charts.Series<CategoryArea, String>> _createSampleData(provider) {
+//    return [
+//      new charts.Series<CategoryArea, String>(
+//        id: 'Categories',
+//        domainFn: (CategoryArea sales, _) => sales.category,
+//        measureFn: (CategoryArea sales, _) => sales.percent,
+//        data: provider.categoryArea,
+//      )
+//    ];
+//  }
 }

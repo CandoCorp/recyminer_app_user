@@ -1,11 +1,10 @@
 import 'package:camera/camera.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recyminer_app/helper/route_helper.dart';
 import 'package:recyminer_app/localization/language_constrants.dart';
-import 'package:recyminer_app/provider/category_provider.dart';
 import 'package:recyminer_app/provider/splash_provider.dart';
+import 'package:recyminer_app/provider/statistics_provider.dart';
 import 'package:recyminer_app/utill/dimensions.dart';
 import 'package:recyminer_app/utill/styles.dart';
 import 'package:recyminer_app/view/screens/home/widget/pie_chart_info.dart';
@@ -20,32 +19,11 @@ class OrdinalSales {
 }
 
 class HomeScreen extends StatelessWidget {
-  final List<charts.Series<OrdinalSales, String>> seriesList =
-      _createSampleData();
-  final bool animate = true;
-
   Future<void> _loadData(BuildContext context, bool reload) async {
-    await Provider.of<CategoryProvider>(context, listen: false)
-        .getCategoryList(context, reload);
-  }
-
-  static List<charts.Series<OrdinalSales, String>> _createSampleData() {
-    final data = [
-      new OrdinalSales('2014', 5),
-      new OrdinalSales('2015', 25),
-      new OrdinalSales('2016', 100),
-      new OrdinalSales('2017', 75),
-    ];
-
-    return [
-      new charts.Series<OrdinalSales, String>(
-        id: 'Sales',
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
-        data: data,
-      )
-    ];
+//    await Provider.of<CategoryProvider>(context, listen: false)
+//        .getCategoryList(context, reload);
+    await Provider.of<StatisticsProvider>(context, listen: false)
+        .getStatistics();
   }
 
   @override
@@ -55,7 +33,7 @@ class HomeScreen extends StatelessWidget {
 
     return RefreshIndicator(
       onRefresh: () async {
-        await _loadData(context, true);
+        //await _loadData(context, true);
       },
       backgroundColor: Theme.of(context).primaryColor,
       child: Scaffold(

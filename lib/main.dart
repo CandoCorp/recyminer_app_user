@@ -24,6 +24,7 @@ import 'package:recyminer_app/provider/onboarding_provider.dart';
 import 'package:recyminer_app/provider/order_provider.dart';
 import 'package:recyminer_app/provider/product_provider.dart';
 import 'package:recyminer_app/provider/profile_provider.dart';
+import 'package:recyminer_app/provider/reward_provider.dart';
 import 'package:recyminer_app/provider/search_provider.dart';
 import 'package:recyminer_app/provider/settings_provider.dart';
 import 'package:recyminer_app/provider/splash_provider.dart';
@@ -87,6 +88,7 @@ Future<void> main() async {
       ChangeNotifierProvider(create: (context) => di.sl<SettingsProvider>()),
       ChangeNotifierProvider(create: (context) => di.sl<IbmCloudProvider>()),
       ChangeNotifierProvider(create: (context) => di.sl<StatisticsProvider>()),
+      ChangeNotifierProvider(create: (context) => di.sl<RewardProvider>()),
     ],
     child: MyApp(orderID: _orderID, isWeb: !kIsWeb),
   ));

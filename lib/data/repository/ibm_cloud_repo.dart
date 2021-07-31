@@ -10,11 +10,13 @@ import 'package:mime_type/mime_type.dart';
 import 'package:recyminer_app/data/datasource/remote/exception/api_error_handler.dart';
 import 'package:recyminer_app/data/model/response/base/api_response.dart';
 import 'package:recyminer_app/utill/app_constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class IbmCloudRepo {
   Dio dioClient;
+  final SharedPreferences sharedPreferences;
 
-  IbmCloudRepo() {
+  IbmCloudRepo({@required this.sharedPreferences}) {
     dioClient = new Dio();
     dioClient
       ..options.baseUrl = '${AppConstants.BASE_IBM_CLOUD}'
@@ -85,6 +87,24 @@ class IbmCloudRepo {
             data: data);
         return ApiResponse.withSuccess(resultDio);
       } catch (e) {
+        if (e.response != null) {
+          if (e.response.statusCode == 403) {
+            //update ibm and try again
+            var errorResult = await getToken();
+
+            if (errorResult.response != null &&
+                errorResult.response.statusCode == 200) {
+              await sharedPreferences.setString(AppConstants.TOKEN_IBM,
+                  errorResult.response.data["access_token"]);
+              //apiResponse.response.data.forEach((category) => _couponList.add(CouponModel.fromJson(category)));
+
+              token = await sharedPreferences.getString(AppConstants.TOKEN_IBM);
+              return upload(file, token);
+            } else {
+              return ApiResponse.withError(ApiErrorHandler.getMessage(e));
+            }
+          }
+        }
         return ApiResponse.withError(ApiErrorHandler.getMessage(e));
       }
 

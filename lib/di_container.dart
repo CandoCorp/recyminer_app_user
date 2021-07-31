@@ -14,6 +14,7 @@ import 'package:recyminer_app/data/repository/order_repo.dart';
 import 'package:recyminer_app/data/repository/product_details_repo.dart';
 import 'package:recyminer_app/data/repository/product_repo.dart';
 import 'package:recyminer_app/data/repository/profile_repo.dart';
+import 'package:recyminer_app/data/repository/reward_repo.dart';
 import 'package:recyminer_app/data/repository/search_repo.dart';
 import 'package:recyminer_app/data/repository/splash_repo.dart';
 import 'package:recyminer_app/data/repository/statistics_repo.dart';
@@ -31,6 +32,7 @@ import 'package:recyminer_app/provider/onboarding_provider.dart';
 import 'package:recyminer_app/provider/order_provider.dart';
 import 'package:recyminer_app/provider/product_provider.dart';
 import 'package:recyminer_app/provider/profile_provider.dart';
+import 'package:recyminer_app/provider/reward_provider.dart';
 import 'package:recyminer_app/provider/search_provider.dart';
 import 'package:recyminer_app/provider/settings_provider.dart';
 import 'package:recyminer_app/provider/splash_provider.dart';
@@ -38,6 +40,7 @@ import 'package:recyminer_app/provider/statistics_provider.dart';
 import 'package:recyminer_app/provider/theme_provider.dart';
 import 'package:recyminer_app/utill/app_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wilt/wilt.dart';
 
 import 'data/datasource/remote/dio/dio_client.dart';
 import 'data/datasource/remote/dio/logging_interceptor.dart';
@@ -48,6 +51,8 @@ Future<void> init() async {
   // Core
   sl.registerLazySingleton(() => DioClient(AppConstants.BASE_URL, sl(),
       loggingInterceptor: sl(), sharedPreferences: sl()));
+  sl.registerLazySingleton(
+      () => Wilt(AppConstants.IBM_CLOUDANT_HOSTNAME, port: 443, useSSL: true));
 
   // Repository
   sl.registerLazySingleton(
@@ -70,8 +75,10 @@ Future<void> init() async {
       () => ProfileRepo(dioClient: sl(), sharedPreferences: sl()));
   sl.registerLazySingleton(() => BannerRepo(dioClient: sl()));
   sl.registerLazySingleton(() => NotificationRepo(dioClient: sl()));
-  sl.registerLazySingleton(() => IbmCloudRepo());
+  sl.registerLazySingleton(() => IbmCloudRepo(sharedPreferences: sl()));
   sl.registerLazySingleton(() => StatisticsRepo(dioClient: sl()));
+  sl.registerLazySingleton(() =>
+      RewardRepo(dioClient: sl(), sharedPreferences: sl(), connection: sl()));
 
   // Provider
   sl.registerFactory(() => ThemeProvider(sharedPreferences: sl()));
@@ -96,6 +103,7 @@ Future<void> init() async {
   sl.registerFactory(
       () => IbmCloudProvider(ibmCloudRepo: sl(), sharedPreferences: sl()));
   sl.registerFactory(() => StatisticsProvider(statisticsRepo: sl()));
+  sl.registerFactory(() => RewardProvider(rewardRepo: sl()));
 
   // External
   final sharedPreferences = await SharedPreferences.getInstance();

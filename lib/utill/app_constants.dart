@@ -5,6 +5,12 @@ class AppConstants {
 
   static const String BASE_URL = 'http://192.168.100.35:81';
   static const String BASE_IBM_CLOUD = 'https://iam.cloud.ibm.com';
+  static const String IBM_CLOUDANT_HOSTNAME =
+      '5eb9c727-3bf1-4515-a60d-a6d8f919d1d8-bluemix.cloudantnosqldb.appdomain.cloud';
+  static const String IBM_CLOUDANT_USERNAME =
+      'apikey-v2-ys07048m3xpcj8xmigtsldfdlfr1o7n2xjsfcxp7ti2';
+  static const String IBM_CLOUDANT_PASSWORD =
+      '68b5a910ecd12e2398dd2a8bfdc8c15b';
   static const String BASE_IBM_OCS =
       'https://s3.us-south.cloud-object-storage.appdomain.cloud';
   static const String IBM_INSTANCE_SERVICE =

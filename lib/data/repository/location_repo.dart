@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_grocery/data/datasource/remote/dio/dio_client.dart';
-import 'package:flutter_grocery/data/datasource/remote/exception/api_error_handler.dart';
-import 'package:flutter_grocery/data/model/response/address_model.dart';
-import 'package:flutter_grocery/data/model/response/base/api_response.dart';
-import 'package:flutter_grocery/localization/language_constrants.dart';
-import 'package:flutter_grocery/utill/app_constants.dart';
+import 'package:recyminer_app/data/datasource/remote/dio/dio_client.dart';
+import 'package:recyminer_app/data/datasource/remote/exception/api_error_handler.dart';
+import 'package:recyminer_app/data/model/response/address_model.dart';
+import 'package:recyminer_app/data/model/response/base/api_response.dart';
+import 'package:recyminer_app/localization/language_constrants.dart';
+import 'package:recyminer_app/utill/app_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocationRepo {
@@ -23,9 +23,21 @@ class LocationRepo {
     }
   }
 
+  Future<ApiResponse> getAddress(int id) async {
+    try {
+      final response =
+          await dioClient.get('${AppConstants.ADDRESS_LIST_URI}/${id}');
+      return ApiResponse.withSuccess(response);
+    } catch (e) {
+      return ApiResponse.withError(ApiErrorHandler.getMessage(e));
+    }
+  }
+
   Future<ApiResponse> removeAddressByID(int id) async {
     try {
-      final response = await dioClient.post('${AppConstants.REMOVE_ADDRESS_URI}$id', data: {"_method": "delete"});
+      final response = await dioClient.post(
+          '${AppConstants.REMOVE_ADDRESS_URI}$id',
+          data: {"_method": "delete"});
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
@@ -44,7 +56,8 @@ class LocationRepo {
     }
   }
 
-  Future<ApiResponse> updateAddress(AddressModel addressModel, int addressId) async {
+  Future<ApiResponse> updateAddress(
+      AddressModel addressModel, int addressId) async {
     try {
       Response response = await dioClient.post(
         '${AppConstants.UPDATE_ADDRESS_URI}$addressId',

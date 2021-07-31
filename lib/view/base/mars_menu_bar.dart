@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_grocery/provider/cart_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:recyminer_app/provider/cart_provider.dart';
 
 class PlutoMenuBar extends StatefulWidget {
   /// Pass [MenuItem] to List.
@@ -182,15 +182,15 @@ class _MenuWidget extends StatelessWidget {
   final TextStyle textStyle;
 
   _MenuWidget(
-      this.menu, {
-        this.goBackButtonText,
-        this.height,
-        this.backgroundColor,
-        this.menuIconColor,
-        this.menuIconSize,
-        this.moreIconColor,
-        this.textStyle,
-      }) : super(key: menu._key);
+    this.menu, {
+    this.goBackButtonText,
+    this.height,
+    this.backgroundColor,
+    this.menuIconColor,
+    this.menuIconSize,
+    this.moreIconColor,
+    this.textStyle,
+  }) : super(key: menu._key);
 
   Widget _buildPopupItem(MenuItem _menu) {
     return Row(
@@ -227,9 +227,9 @@ class _MenuWidget extends StatelessWidget {
   }
 
   Future<MenuItem> _showPopupMenu(
-      BuildContext context,
-      List<MenuItem> menuItems,
-      ) async {
+    BuildContext context,
+    List<MenuItem> menuItems,
+  ) async {
     final RenderBox overlay = Overlay.of(context).context.findRenderObject();
 
     final Offset position = menu._position + Offset(0, height - 11);
@@ -254,15 +254,15 @@ class _MenuWidget extends StatelessWidget {
   }
 
   Widget _getMenu(
-      BuildContext context,
-      MenuItem menu,
-      ) {
+    BuildContext context,
+    MenuItem menu,
+  ) {
     Future<MenuItem> _getSelectedMenu(
-        MenuItem menu, {
-          MenuItem previousMenu,
-          int stackIdx,
-          List<MenuItem> stack,
-        }) async {
+      MenuItem menu, {
+      MenuItem previousMenu,
+      int stackIdx,
+      List<MenuItem> stack,
+    }) async {
       if (!menu._hasChildren) {
         return menu;
       }
@@ -335,23 +335,38 @@ class _MenuWidget extends StatelessWidget {
           children: [
             if (menu.icon != null) ...[
               Stack(
-                clipBehavior: Clip.none, children: [
-                Icon(menu.icon, size: menuIconSize,color: menuIconColor,),
-                menu.title.isEmpty? Positioned(
-                  top: -7, right: -7,
-                  child: Container(
-                    padding: EdgeInsets.all(4),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.red),
-                    child: Center(
-                      child: Text(
-                        Provider.of<CartProvider>(context).cartList.length.toString(),
-                        style: TextStyle(color: Colors.white, fontSize: 8) //rubikMedium.copyWith(color: ColorResources.COLOR_WHITE, fontSize: 8),
-                      ),
-                    ),
+                clipBehavior: Clip.none,
+                children: [
+                  Icon(
+                    menu.icon,
+                    size: menuIconSize,
+                    color: menuIconColor,
                   ),
-                ):SizedBox()
-              ],
+                  menu.title.isEmpty
+                      ? Positioned(
+                          top: -7,
+                          right: -7,
+                          child: Container(
+                            padding: EdgeInsets.all(4),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle, color: Colors.red),
+                            child: Center(
+                              child: Text(
+                                  Provider.of<CartProvider>(context)
+                                      .cartList
+                                      .length
+                                      .toString(),
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize:
+                                          8) //rubikMedium.copyWith(color: ColorResources.COLOR_WHITE, fontSize: 8),
+                                  ),
+                            ),
+                          ),
+                        )
+                      : SizedBox()
+                ],
               ),
               // menu.icon,
               // color: menuIconColor,

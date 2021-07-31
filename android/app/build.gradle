@@ -45,8 +45,8 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.u6amtech.flutter_grocery"
-        minSdkVersion 20
+        applicationId "com.recyminer.app"
+        minSdkVersion 21
         targetSdkVersion 29
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -79,4 +79,5 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "com.google.firebase:firebase-messaging:21.0.1"
     implementation 'com.android.support:multidex:1.0.3'
+    implementation 'com.google.firebase:firebase-analytics'
 }

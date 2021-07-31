@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_grocery/helper/price_converter.dart';
-import 'package:flutter_grocery/localization/language_constrants.dart';
-import 'package:flutter_grocery/provider/order_provider.dart';
-import 'package:flutter_grocery/provider/splash_provider.dart';
-import 'package:flutter_grocery/utill/dimensions.dart';
-import 'package:flutter_grocery/utill/styles.dart';
 import 'package:provider/provider.dart';
+import 'package:recyminer_app/helper/price_converter.dart';
+import 'package:recyminer_app/localization/language_constrants.dart';
+import 'package:recyminer_app/provider/order_provider.dart';
+import 'package:recyminer_app/provider/splash_provider.dart';
+import 'package:recyminer_app/utill/dimensions.dart';
+import 'package:recyminer_app/utill/styles.dart';
 
 class DeliveryOptionButton extends StatelessWidget {
   final String value;
@@ -27,13 +27,11 @@ class DeliveryOptionButton extends StatelessWidget {
                 onChanged: (String value) => order.setOrderType(value),
               ),
               SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
-
               Text(title, style: poppinsRegular),
               SizedBox(width: 5),
-
-              Text('(${value == 'delivery' ? PriceConverter.convertPrice(context, double.parse(Provider.of<SplashProvider>(context, listen: false)
-                  .configModel.deliveryCharge)) : getTranslated('free', context)})', style: poppinsMedium),
-
+              Text(
+                  '(${value == 'delivery' ? PriceConverter.convertPrice(context, double.parse(Provider.of<SplashProvider>(context, listen: false).configModel.deliveryCharge)) : getTranslated('free', context)})',
+                  style: poppinsMedium),
             ],
           ),
         );

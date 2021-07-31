@@ -173,6 +173,28 @@ class Product {
     }
   }
 
+  Map<String, dynamic> toApi() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this._name;
+    data['description'] = this._description;
+    data['images'] = ["dummy.png"];
+    data['price'] = this._price;
+    data['tax'] = 12;
+
+    if (this._categoryIds != null) {
+      data['category_id'] = this._categoryIds.first.id;
+      data['sub_category_id'] = this._categoryIds.first.id;
+    }
+    data['discount'] = 0;
+    data['discount_type'] = "percent";
+    data['tax_type'] = "percent";
+    data['unit'] = this._unit;
+    data['capacity'] = this._capacity;
+    data['total_stock'] = 1;
+
+    return data;
+  }
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this._id;
@@ -208,7 +230,7 @@ class Product {
   }
 }
 
-class Variations {
+class  Variations {
   String _type;
   double _price;
   int _stock;

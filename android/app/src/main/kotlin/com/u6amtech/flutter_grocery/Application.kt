@@ -1,4 +1,4 @@
-package com.u6amtech.flutter_grocery
+package com.recyminer.app
 
 import io.flutter.app.FlutterApplication
 import io.flutter.plugin.common.PluginRegistry

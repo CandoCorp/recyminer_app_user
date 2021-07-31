@@ -1,4 +1,4 @@
-# flutter_grocery
+# recyminer_app
 
 A new Flutter application.
 

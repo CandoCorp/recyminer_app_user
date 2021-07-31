@@ -1,8 +1,9 @@
 import 'dart:math' show pi;
-import 'package:flutter/material.dart';
+
 import 'package:flutter/foundation.dart';
-import 'package:flutter_grocery/provider/localization_provider.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:recyminer_app/provider/localization_provider.dart';
 
 class CustomDrawerController {
   Function open;
@@ -57,10 +58,9 @@ class _CustomDrawerState extends State<CustomDrawer>
   final Curve _scaleUpCurve = Interval(0.0, 1.0, curve: Curves.easeOut);
   final Curve _slideOutCurve = Interval(0.0, 1.0, curve: Curves.easeOut);
   final Curve _slideInCurve =
-  Interval(0.0, 1.0, curve: Curves.easeOut); // Curves.bounceOut
+      Interval(0.0, 1.0, curve: Curves.easeOut); // Curves.bounceOut
 
   /// check the slide direction
-
 
   AnimationController _animationController;
   DrawerState _state = DrawerState.closed;
@@ -84,7 +84,7 @@ class _CustomDrawerState extends State<CustomDrawer>
   }
 
   bool isOpen() =>
-      _state == DrawerState.open  /*|| _state == DrawerState.opening*/;
+      _state == DrawerState.open /*|| _state == DrawerState.opening*/;
 
   /// Drawer state
   ValueNotifier<DrawerState> stateNotifier;
@@ -138,7 +138,7 @@ class _CustomDrawerState extends State<CustomDrawer>
     super.dispose();
   }
 
-  Widget _zoomAndSlideContent(Widget container,BuildContext context,
+  Widget _zoomAndSlideContent(Widget container, BuildContext context,
       {double angle, double scale, double slide = 0}) {
     var slidePercent, scalePercent;
 
@@ -186,14 +186,14 @@ class _CustomDrawerState extends State<CustomDrawer>
 
   @override
   Widget build(BuildContext context) {
-    final slidePercent =
-    CustomDrawer.isRTL(context) ? MediaQuery.of(context).size.width * .1 : 15.0;
+    final slidePercent = CustomDrawer.isRTL(context)
+        ? MediaQuery.of(context).size.width * .1
+        : 15.0;
 
     return Stack(
       children: [
         GestureDetector(
           child: widget.menuScreen,
-
           onPanUpdate: (details) {
             final bool _rtl = CustomDrawer.isRTL(context);
             if (details.delta.dx < -6 && !_rtl ||
@@ -206,7 +206,7 @@ class _CustomDrawerState extends State<CustomDrawer>
           /// Displaying the first shadow
           AnimatedBuilder(
             animation: _animationController,
-            builder: (_, w) => _zoomAndSlideContent(w,context,
+            builder: (_, w) => _zoomAndSlideContent(w, context,
                 angle: (widget.angle == 0.0) ? 0.0 : widget.angle - 8,
                 scale: .9,
                 slide: slidePercent * 2),
@@ -218,7 +218,7 @@ class _CustomDrawerState extends State<CustomDrawer>
           /// Displaying the second shadow
           AnimatedBuilder(
             animation: _animationController,
-            builder: (_, w) => _zoomAndSlideContent(w,context,
+            builder: (_, w) => _zoomAndSlideContent(w, context,
                 angle: (widget.angle == 0.0) ? 0.0 : widget.angle - 4.0,
                 scale: .95,
                 slide: slidePercent),

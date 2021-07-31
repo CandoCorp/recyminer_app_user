@@ -1,4 +1,4 @@
-package com.u6amtech.flutter_grocery
+package com.recyminer.app
 
 import io.flutter.plugin.common.PluginRegistry
 import io.flutter.plugins.firebase.messaging.FlutterFirebaseMessagingPlugin

@@ -1,9 +1,10 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_grocery/data/model/response/base/api_response.dart';
-import 'package:flutter_grocery/data/model/response/base/error_response.dart';
-import 'package:flutter_grocery/data/model/response/response_model.dart';
-import 'package:flutter_grocery/data/model/response/signup_model.dart';
-import 'package:flutter_grocery/data/repository/auth_repo.dart';
+import 'package:flutter/material.dart';
+import 'package:recyminer_app/data/model/response/base/api_response.dart';
+import 'package:recyminer_app/data/model/response/base/error_response.dart';
+import 'package:recyminer_app/data/model/response/response_model.dart';
+import 'package:recyminer_app/data/model/response/signup_model.dart';
+import 'package:recyminer_app/data/repository/auth_repo.dart';
 
 class AuthProvider with ChangeNotifier {
   final AuthRepo authRepo;
@@ -66,6 +67,7 @@ class AuthProvider with ChangeNotifier {
     if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
       Map map = apiResponse.response.data;
       String token = map["token"];
+      _email = email;
       authRepo.saveUserToken(token);
       await authRepo.updateToken();
       responseModel = ResponseModel(true, 'successful');

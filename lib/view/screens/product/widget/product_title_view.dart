@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_grocery/data/model/response/product_model.dart';
-import 'package:flutter_grocery/helper/price_converter.dart';
-import 'package:flutter_grocery/localization/language_constrants.dart';
-import 'package:flutter_grocery/provider/product_provider.dart';
-import 'package:flutter_grocery/utill/color_resources.dart';
-import 'package:flutter_grocery/utill/dimensions.dart';
-import 'package:flutter_grocery/utill/styles.dart';
-import 'package:flutter_grocery/view/base/custom_snackbar.dart';
+import 'package:recyminer_app/data/model/response/product_model.dart';
+import 'package:recyminer_app/helper/price_converter.dart';
+import 'package:recyminer_app/localization/language_constrants.dart';
+import 'package:recyminer_app/provider/product_provider.dart';
+import 'package:recyminer_app/utill/color_resources.dart';
+import 'package:recyminer_app/utill/dimensions.dart';
+import 'package:recyminer_app/utill/styles.dart';
+import 'package:recyminer_app/view/base/custom_snackbar.dart';
 import 'package:provider/provider.dart';
 
 class ProductTitleView extends StatelessWidget {

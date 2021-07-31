@@ -3,13 +3,13 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_grocery/data/model/response/base/api_response.dart';
-import 'package:flutter_grocery/data/model/response/response_model.dart';
-import 'package:flutter_grocery/data/model/response/userinfo_model.dart';
-import 'package:flutter_grocery/data/repository/profile_repo.dart';
-import 'package:flutter_grocery/helper/api_checker.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:recyminer_app/data/model/response/base/api_response.dart';
+import 'package:recyminer_app/data/model/response/response_model.dart';
+import 'package:recyminer_app/data/model/response/userinfo_model.dart';
+import 'package:recyminer_app/data/repository/profile_repo.dart';
+import 'package:recyminer_app/helper/api_checker.dart';
 
 class ProfileProvider with ChangeNotifier {
   final ProfileRepo profileRepo;
@@ -20,11 +20,19 @@ class ProfileProvider with ChangeNotifier {
 
   UserInfoModel get userInfoModel => _userInfoModel;
 
+  int _userId;
+  int get userId => _userId;
+
   Future<ResponseModel> getUserInfo(BuildContext context) async {
     ResponseModel _responseModel;
     ApiResponse apiResponse = await profileRepo.getUserInfo();
-    if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
+    if (apiResponse.response != null &&
+        apiResponse.response.statusCode == 200) {
       _userInfoModel = UserInfoModel.fromJson(apiResponse.response.data);
+
+      _userId = _userInfoModel.id;
+      await profileRepo.saveUserId(_userInfoModel.id);
+
       _responseModel = ResponseModel(true, 'successful');
     } else {
       String _errorMessage;
@@ -54,7 +62,11 @@ class ProfileProvider with ChangeNotifier {
   final picker = ImagePicker();
 
   void choosePhoto() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery, imageQuality: 50, maxHeight: 500, maxWidth: 500);
+    final pickedFile = await picker.getImage(
+        source: ImageSource.gallery,
+        imageQuality: 50,
+        maxHeight: 500,
+        maxWidth: 500);
     if (pickedFile != null) {
       _file = File(pickedFile.path);
     } else {
@@ -64,15 +76,21 @@ class ProfileProvider with ChangeNotifier {
   }
 
   void pickImage() async {
-    _data = await picker.getImage(source: ImageSource.gallery, maxHeight: 100, maxWidth: 100, imageQuality: 20);
+    _data = await picker.getImage(
+        source: ImageSource.gallery,
+        maxHeight: 100,
+        maxWidth: 100,
+        imageQuality: 20);
     notifyListeners();
   }
 
-  Future<ResponseModel> updateUserInfo(UserInfoModel updateUserModel, File file, PickedFile data, String token) async {
+  Future<ResponseModel> updateUserInfo(UserInfoModel updateUserModel, File file,
+      PickedFile data, String token) async {
     _isLoading = true;
     notifyListeners();
     ResponseModel _responseModel;
-    http.StreamedResponse response = await profileRepo.updateProfile(updateUserModel, file, data, token);
+    http.StreamedResponse response =
+        await profileRepo.updateProfile(updateUserModel, file, data, token);
     _isLoading = false;
     if (response.statusCode == 200) {
       Map map = jsonDecode(await response.stream.bytesToString());
@@ -81,7 +99,8 @@ class ProfileProvider with ChangeNotifier {
       _responseModel = ResponseModel(true, message);
       print(message);
     } else {
-      _responseModel = ResponseModel(false, '${response.statusCode} ${response.reasonPhrase}');
+      _responseModel = ResponseModel(
+          false, '${response.statusCode} ${response.reasonPhrase}');
       print('${response.statusCode} ${response.reasonPhrase}');
     }
     notifyListeners();

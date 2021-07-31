@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_grocery/data/model/response/base/api_response.dart';
-import 'package:flutter_grocery/data/model/response/cart_model.dart';
-import 'package:flutter_grocery/data/model/response/category_model.dart';
-import 'package:flutter_grocery/data/model/response/product_model.dart';
-import 'package:flutter_grocery/data/repository/product_repo.dart';
-import 'package:flutter_grocery/data/repository/search_repo.dart';
-import 'package:flutter_grocery/helper/api_checker.dart';
+import 'package:recyminer_app/data/model/response/base/api_response.dart';
+import 'package:recyminer_app/data/model/response/base/error_response.dart';
+import 'package:recyminer_app/data/model/response/cart_model.dart';
+import 'package:recyminer_app/data/model/response/category_model.dart';
+import 'package:recyminer_app/data/model/response/product_model.dart';
+import 'package:recyminer_app/data/model/response/response_model.dart';
+import 'package:recyminer_app/data/repository/product_repo.dart';
+import 'package:recyminer_app/data/repository/search_repo.dart';
+import 'package:recyminer_app/helper/api_checker.dart';
 
 class ProductProvider extends ChangeNotifier {
   final ProductRepo productRepo;
@@ -18,6 +20,8 @@ class ProductProvider extends ChangeNotifier {
   List<Product> _popularProductList;
   List<Product> _dailyItemList;
   bool _isLoading = false;
+  bool _loading = false;
+  bool get loading => _loading;
   int _popularPageSize;
   List<String> _offsetList = [];
   int _quantity = 1;
@@ -33,26 +37,43 @@ class ProductProvider extends ChangeNotifier {
   List<int> get variationIndex => _variationIndex;
   int get imageSliderIndex => _imageSliderIndex;
 
-  Future<void> getPopularProductList(BuildContext context, String offset, bool reload) async {
-    if(reload) {
+  String _errorMessage = '';
+  String get errorMessage => _errorMessage;
+  String _productStatusMessage = '';
+  String get productStatusMessage => _productStatusMessage;
+
+  updateProductStatusMessae({String message}) {
+    _productStatusMessage = message;
+  }
+
+  updateErrorMessage({String message}) {
+    _errorMessage = message;
+  }
+
+  Future<void> getPopularProductList(
+      BuildContext context, String offset, bool reload) async {
+    if (reload) {
       _offsetList = [];
     }
     if (!_offsetList.contains(offset)) {
       _offsetList.add(offset);
       ApiResponse apiResponse = await productRepo.getPopularProductList(offset);
-      if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
+      if (apiResponse.response != null &&
+          apiResponse.response.statusCode == 200) {
         if (reload) {
           _popularProductList = [];
         }
-        _popularProductList.addAll(ProductModel.fromJson(apiResponse.response.data).products);
-        _popularPageSize = ProductModel.fromJson(apiResponse.response.data).totalSize;
+        _popularProductList
+            .addAll(ProductModel.fromJson(apiResponse.response.data).products);
+        _popularPageSize =
+            ProductModel.fromJson(apiResponse.response.data).totalSize;
         _isLoading = false;
         notifyListeners();
       } else {
         ApiChecker.checkApi(context, apiResponse);
       }
     } else {
-      if(isLoading) {
+      if (isLoading) {
         _isLoading = false;
         notifyListeners();
       }
@@ -60,11 +81,13 @@ class ProductProvider extends ChangeNotifier {
   }
 
   Future<void> getDailyItemList(BuildContext context, bool reload) async {
-    if(_dailyItemList == null || reload) {
+    if (_dailyItemList == null || reload) {
       ApiResponse apiResponse = await productRepo.getDailyItemList();
-      if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
+      if (apiResponse.response != null &&
+          apiResponse.response.statusCode == 200) {
         _dailyItemList = [];
-        apiResponse.response.data.forEach((dailyItem) => _dailyItemList.add(Product.fromJson(dailyItem)));
+        apiResponse.response.data.forEach(
+            (dailyItem) => _dailyItemList.add(Product.fromJson(dailyItem)));
       } else {
         ApiChecker.checkApi(context, apiResponse);
       }
@@ -72,14 +95,17 @@ class ProductProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> getProductDetails(BuildContext context, Product product, CartModel cart) async {
-    if(product.name != null) {
+  Future<void> getProductDetails(
+      BuildContext context, Product product, CartModel cart) async {
+    if (product.name != null) {
       _product = product;
-    }else {
+    } else {
       _product = null;
       notifyListeners();
-      ApiResponse apiResponse = await productRepo.getProductDetails(product.id.toString());
-      if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
+      ApiResponse apiResponse =
+          await productRepo.getProductDetails(product.id.toString());
+      if (apiResponse.response != null &&
+          apiResponse.response.statusCode == 200) {
         _product = Product.fromJson(apiResponse.response.data);
       } else {
         ApiChecker.checkApi(context, apiResponse);
@@ -96,7 +122,7 @@ class ProductProvider extends ChangeNotifier {
 
   void initData(Product product, CartModel cart) {
     _variationIndex = [];
-    if(cart != null) {
+    if (cart != null) {
       _quantity = cart.quantity;
       List<String> _variationTypes = [];
       if (cart.variation.type != null) {
@@ -118,6 +144,67 @@ class ProductProvider extends ChangeNotifier {
       product.choiceOptions.forEach((element) => _variationIndex.add(0));
     }
   }
+
+  Future<ResponseModel> addProduct(Product productModel) async {
+    _isLoading = true;
+    notifyListeners();
+    _errorMessage = '';
+    _productStatusMessage = null;
+    ApiResponse apiResponse = await productRepo.addProduct(productModel);
+    _isLoading = false;
+    ResponseModel responseModel;
+    if (apiResponse.response != null &&
+        apiResponse.response.statusCode == 200) {
+      //Map map = apiResponse.response.data;
+      if (apiResponse.response.data != null &&
+          apiResponse.response.data.length > 0) {
+        //final Map<String, dynamic> result = Map.from(apiResponse.response.data);
+
+        if (apiResponse.response.data[0] == null) {
+          String errorMessage =
+              apiResponse.response.data['errors'].first['message'];
+          //ErrorResponse errorResponse = apiResponse.error;
+          print(errorMessage);
+          errorMessage = errorMessage;
+          _errorMessage = errorMessage;
+          //_productStatusMessage = errorMessage;
+          responseModel = ResponseModel(false, errorMessage);
+        }
+
+        if (apiResponse.response.data[0].length == 18) {
+          String message = "Todo ok";
+          responseModel = ResponseModel(true, message);
+
+          var dataMap = apiResponse.response.data[0] as Map;
+          var x = dataMap.values.last;
+          //var x =  apiResponse.response.data[0].id;
+          this._product = new Product(id: x);
+          _productStatusMessage = message;
+        }
+      } else {
+        String message = "Todo ok";
+        responseModel = ResponseModel(true, message);
+
+        this._product = apiResponse.response.data;
+        _productStatusMessage = message;
+      }
+    } else {
+      String errorMessage = apiResponse.error.toString();
+      if (apiResponse.error is String) {
+        print(apiResponse.error.toString());
+        errorMessage = apiResponse.error.toString();
+      } else {
+        ErrorResponse errorResponse = apiResponse.error;
+        print(errorResponse.errors[0].message);
+        errorMessage = errorResponse.errors[0].message;
+      }
+      responseModel = ResponseModel(false, errorMessage);
+      _errorMessage = errorMessage;
+    }
+    notifyListeners();
+    return responseModel;
+  }
+
   /*void initData(Product product, CartModel cart) {
     _quantity = 1;
     _variationIndex = [];
@@ -189,20 +276,25 @@ class ProductProvider extends ChangeNotifier {
     _categoryProductList = [];
     _categoryAllProductList = [];
     _hasData = true;
-    ApiResponse apiResponse = await productRepo.getBrandOrCategoryProductList(id);
-    if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
+    ApiResponse apiResponse =
+        await productRepo.getBrandOrCategoryProductList(id);
+    if (apiResponse.response != null &&
+        apiResponse.response.statusCode == 200) {
       _categoryProductList = [];
       _categoryAllProductList = [];
-      apiResponse.response.data.forEach((product) => _categoryProductList.add(Product.fromJson(product)));
-      apiResponse.response.data.forEach((product) => _categoryAllProductList.add(Product.fromJson(product)));
+      apiResponse.response.data.forEach(
+          (product) => _categoryProductList.add(Product.fromJson(product)));
+      apiResponse.response.data.forEach(
+          (product) => _categoryAllProductList.add(Product.fromJson(product)));
       _hasData = _categoryProductList.length > 1;
       List<Product> _products = [];
       _products.addAll(_categoryProductList);
       List<double> _prices = [];
-      _products.forEach((product) => _prices.add(double.parse(product.price.toString())));
+      _products.forEach(
+          (product) => _prices.add(double.parse(product.price.toString())));
       _prices.sort();
-      if(categoryProductList.length!=0)
-      _maxValue = _prices[_prices.length - 1];
+      if (categoryProductList.length != 0)
+        _maxValue = _prices[_prices.length - 1];
       notifyListeners();
     } else {
       ApiChecker.checkApi(context, apiResponse);
@@ -210,16 +302,20 @@ class ProductProvider extends ChangeNotifier {
   }
 
   void sortCategoryProduct(int filterIndex) {
-    if(filterIndex == 0) {
-      _categoryProductList.sort((product1, product2) => product1.price.compareTo(product2.price));
-    }else if(filterIndex == 1) {
-      _categoryProductList.sort((product1, product2) => product1.price.compareTo(product2.price));
+    if (filterIndex == 0) {
+      _categoryProductList.sort(
+          (product1, product2) => product1.price.compareTo(product2.price));
+    } else if (filterIndex == 1) {
+      _categoryProductList.sort(
+          (product1, product2) => product1.price.compareTo(product2.price));
       Iterable iterable = _categoryProductList.reversed;
       _categoryProductList = iterable.toList();
-    }else if(filterIndex == 2) {
-      _categoryProductList.sort((product1, product2) => product1.name.toLowerCase().compareTo(product2.name.toLowerCase()));
-    }else if(filterIndex == 3) {
-      _categoryProductList.sort((product1, product2) => product1.name.toLowerCase().compareTo(product2.name.toLowerCase()));
+    } else if (filterIndex == 2) {
+      _categoryProductList.sort((product1, product2) =>
+          product1.name.toLowerCase().compareTo(product2.name.toLowerCase()));
+    } else if (filterIndex == 3) {
+      _categoryProductList.sort((product1, product2) =>
+          product1.name.toLowerCase().compareTo(product2.name.toLowerCase()));
       Iterable iterable = _categoryProductList.reversed;
       _categoryProductList = iterable.toList();
     }
@@ -264,32 +360,32 @@ class ProductProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-
   void sortSearchList(int selectSortByIndex, List<CategoryModel> categoryList) {
     if (_upperValue > 0 && selectSortByIndex == 0) {
       _categoryProductList.clear();
       _categoryAllProductList.forEach((product) {
-        if (((double.parse(product.price.toString())) >= _lowerValue) && ((double.parse(product.price.toString())) <= _upperValue)) {
+        if (((double.parse(product.price.toString())) >= _lowerValue) &&
+            ((double.parse(product.price.toString())) <= _upperValue)) {
           _categoryProductList.add(product);
         }
       });
     } else if (_upperValue == 0 && selectSortByIndex == 0) {
-      _categoryProductList .clear();
+      _categoryProductList.clear();
       _categoryProductList = _categoryAllProductList;
     } else if (_upperValue == 0 && selectSortByIndex == 1) {
       _categoryProductList.clear();
       _categoryProductList = _categoryAllProductList;
-      _categoryProductList.sort((a, b){
-        double aPrice=double.parse(a.price.toString());
-        double bPrice=double.parse(b.price.toString());
+      _categoryProductList.sort((a, b) {
+        double aPrice = double.parse(a.price.toString());
+        double bPrice = double.parse(b.price.toString());
         return aPrice.compareTo(bPrice);
       });
     } else if (_upperValue == 0 && selectSortByIndex == 2) {
       _categoryProductList.clear();
       _categoryProductList = _categoryAllProductList;
-      _categoryProductList.sort((a, b){
-        double aPrice=double.parse(a.price.toString());
-        double bPrice=double.parse(b.price.toString());
+      _categoryProductList.sort((a, b) {
+        double aPrice = double.parse(a.price.toString());
+        double bPrice = double.parse(b.price.toString());
         return aPrice.compareTo(bPrice);
       });
       Iterable iterable = _categoryProductList.reversed;
@@ -325,6 +421,25 @@ class ProductProvider extends ChangeNotifier {
       _allSortBy = searchRepo.getAllSortByList(context);
     }
     _filterIndex = -1;
+  }
 
+  // for Label Us
+  List<String> _getAllUnitType = [];
+
+  List<String> get getAllUnitType => _getAllUnitType;
+  int _selectUnitIndex = 0;
+
+  int get selectUnitIndex => _selectUnitIndex;
+
+  updateUnitIndex(int index) {
+    _selectUnitIndex = index;
+    notifyListeners();
+  }
+
+  initializeAllUnitType({BuildContext context}) {
+    if (_getAllUnitType.length == 0) {
+      _getAllUnitType = [];
+      _getAllUnitType = productRepo.getAllUnitType(context: context);
+    }
   }
 }

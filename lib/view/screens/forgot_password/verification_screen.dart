@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_grocery/helper/responsive_helper.dart';
-import 'package:flutter_grocery/helper/route_helper.dart';
-import 'package:flutter_grocery/localization/language_constrants.dart';
-import 'package:flutter_grocery/provider/auth_provider.dart';
-import 'package:flutter_grocery/utill/color_resources.dart';
-import 'package:flutter_grocery/utill/dimensions.dart';
-import 'package:flutter_grocery/utill/images.dart';
-import 'package:flutter_grocery/utill/styles.dart';
-import 'package:flutter_grocery/view/base/custom_app_bar.dart';
-import 'package:flutter_grocery/view/base/custom_button.dart';
-import 'package:flutter_grocery/view/base/custom_snackbar.dart';
-import 'package:flutter_grocery/view/base/main_app_bar.dart';
-import 'package:flutter_grocery/view/screens/auth/create_account_screen.dart';
-import 'package:flutter_grocery/view/screens/forgot_password/create_new_password_screen.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:provider/provider.dart';
+import 'package:recyminer_app/helper/responsive_helper.dart';
+import 'package:recyminer_app/helper/route_helper.dart';
+import 'package:recyminer_app/localization/language_constrants.dart';
+import 'package:recyminer_app/provider/auth_provider.dart';
+import 'package:recyminer_app/utill/color_resources.dart';
+import 'package:recyminer_app/utill/dimensions.dart';
+import 'package:recyminer_app/utill/images.dart';
+import 'package:recyminer_app/utill/styles.dart';
+import 'package:recyminer_app/view/base/custom_app_bar.dart';
+import 'package:recyminer_app/view/base/custom_button.dart';
+import 'package:recyminer_app/view/base/custom_snackbar.dart';
+import 'package:recyminer_app/view/base/main_app_bar.dart';
+import 'package:recyminer_app/view/screens/auth/create_account_screen.dart';
+import 'package:recyminer_app/view/screens/forgot_password/create_new_password_screen.dart';
 
 class VerificationScreen extends StatelessWidget {
   final String emailAddress;
@@ -23,10 +23,11 @@ class VerificationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: ColorResources.getCardBgColor(context),
-      appBar: ResponsiveHelper.isDesktop(context)? MainAppBar(): CustomAppBar(title: getTranslated('verify_email', context)),
+      appBar: ResponsiveHelper.isDesktop(context)
+          ? MainAppBar()
+          : CustomAppBar(title: getTranslated('verify_email', context)),
       body: SafeArea(
         child: Scrollbar(
           child: SingleChildScrollView(
@@ -38,7 +39,10 @@ class VerificationScreen extends StatelessWidget {
                   builder: (context, authProvider, child) => Column(
                     children: [
                       SizedBox(height: 55),
-                      Image.asset(Images.email_with_background, width: 142, height: 142, color: Theme.of(context).primaryColor),
+                      Image.asset(Images.email_with_background,
+                          width: 142,
+                          height: 142,
+                          color: Theme.of(context).primaryColor),
                       SizedBox(height: 40),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 50),
@@ -46,11 +50,13 @@ class VerificationScreen extends StatelessWidget {
                             child: Text(
                           '${getTranslated('please_enter_4_digit_code', context)}\n $emailAddress',
                           textAlign: TextAlign.center,
-                          style: poppinsRegular.copyWith(color: ColorResources.getHintColor(context)),
+                          style: poppinsRegular.copyWith(
+                              color: ColorResources.getHintColor(context)),
                         )),
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 39, vertical: 35),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 39, vertical: 35),
                         child: PinCodeTextField(
                           length: 4,
                           appContext: context,
@@ -63,12 +69,17 @@ class VerificationScreen extends StatelessWidget {
                             fieldWidth: 55,
                             borderWidth: 1,
                             borderRadius: BorderRadius.circular(10),
-                            selectedColor: Theme.of(context).primaryColor.withOpacity(.2),
+                            selectedColor:
+                                Theme.of(context).primaryColor.withOpacity(.2),
                             selectedFillColor: Colors.white,
-                            inactiveFillColor: ColorResources.getCardBgColor(context),
-                            inactiveColor: Theme.of(context).primaryColor.withOpacity(.2),
-                            activeColor: Theme.of(context).primaryColor.withOpacity(.4),
-                            activeFillColor: ColorResources.getCardBgColor(context),
+                            inactiveFillColor:
+                                ColorResources.getCardBgColor(context),
+                            inactiveColor:
+                                Theme.of(context).primaryColor.withOpacity(.2),
+                            activeColor:
+                                Theme.of(context).primaryColor.withOpacity(.4),
+                            activeFillColor:
+                                ColorResources.getCardBgColor(context),
                           ),
                           animationDuration: Duration(milliseconds: 300),
                           backgroundColor: Colors.transparent,
@@ -90,17 +101,25 @@ class VerificationScreen extends StatelessWidget {
                         child: InkWell(
                           onTap: () {
                             if (fromSignUp) {
-                              Provider.of<AuthProvider>(context, listen: false).checkEmail(emailAddress).then((value) {
+                              Provider.of<AuthProvider>(context, listen: false)
+                                  .checkEmail(emailAddress)
+                                  .then((value) {
                                 if (value.isSuccess) {
-                                  showCustomSnackBar('Resent code successful', context, isError: false);
+                                  showCustomSnackBar(
+                                      'Resent code successful', context,
+                                      isError: false);
                                 } else {
                                   showCustomSnackBar(value.message, context);
                                 }
                               });
                             } else {
-                              Provider.of<AuthProvider>(context, listen: false).forgetPassword(emailAddress).then((value) {
+                              Provider.of<AuthProvider>(context, listen: false)
+                                  .forgetPassword(emailAddress)
+                                  .then((value) {
                                 if (value.isSuccess) {
-                                  showCustomSnackBar('Resent code successful', context, isError: false);
+                                  showCustomSnackBar(
+                                      'Resent code successful', context,
+                                      isError: false);
                                 } else {
                                   showCustomSnackBar(value.message, context);
                                 }
@@ -108,7 +127,8 @@ class VerificationScreen extends StatelessWidget {
                             }
                           },
                           child: Padding(
-                            padding: EdgeInsets.all(Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                            padding: EdgeInsets.all(
+                                Dimensions.PADDING_SIZE_EXTRA_SMALL),
                             child: Text(
                               getTranslated('resend_code', context),
                               style: poppinsMedium.copyWith(
@@ -122,34 +142,58 @@ class VerificationScreen extends StatelessWidget {
                       authProvider.isEnableVerificationCode
                           ? !authProvider.isPhoneNumberVerificationButtonLoading
                               ? Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_LARGE),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal:
+                                          Dimensions.PADDING_SIZE_LARGE),
                                   child: CustomButton(
-                                    buttonText: getTranslated('verify', context),
+                                    buttonText:
+                                        getTranslated('verify', context),
                                     onPressed: () {
                                       if (fromSignUp) {
-                                        Provider.of<AuthProvider>(context, listen: false).verifyEmail(emailAddress).then((value) {
+                                        Provider.of<AuthProvider>(context,
+                                                listen: false)
+                                            .verifyEmail(emailAddress)
+                                            .then((value) {
                                           if (value.isSuccess) {
-                                            Navigator.of(context).pushNamed(RouteHelper.createAccount, arguments: CreateAccountScreen());
+                                            Navigator.of(context).pushNamed(
+                                                RouteHelper.createAccount,
+                                                arguments:
+                                                    CreateAccountScreen());
                                           } else {
-                                            showCustomSnackBar(value.message, context);
+                                            showCustomSnackBar(
+                                                value.message, context);
                                           }
                                         });
                                       } else {
-                                        Provider.of<AuthProvider>(context, listen: false).verifyToken(emailAddress).then((value) {
-                                          if(value.isSuccess) {
+                                        Provider.of<AuthProvider>(context,
+                                                listen: false)
+                                            .verifyToken(emailAddress)
+                                            .then((value) {
+                                          if (value.isSuccess) {
                                             Navigator.of(context).pushNamed(
-                                              RouteHelper.getNewPassRoute(emailAddress, authProvider.verificationCode),
-                                              arguments: CreateNewPasswordScreen(email: emailAddress, resetToken: authProvider.verificationCode),
+                                              RouteHelper.getNewPassRoute(
+                                                  emailAddress,
+                                                  authProvider
+                                                      .verificationCode),
+                                              arguments:
+                                                  CreateNewPasswordScreen(
+                                                      email: emailAddress,
+                                                      resetToken: authProvider
+                                                          .verificationCode),
                                             );
-                                          }else {
-                                            showCustomSnackBar(value.message, context);
+                                          } else {
+                                            showCustomSnackBar(
+                                                value.message, context);
                                           }
                                         });
                                       }
                                     },
                                   ),
                                 )
-                              : Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor)))
+                              : Center(
+                                  child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          Theme.of(context).primaryColor)))
                           : SizedBox.shrink()
                     ],
                   ),

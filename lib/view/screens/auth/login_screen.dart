@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_grocery/helper/email_checker.dart';
-import 'package:flutter_grocery/helper/responsive_helper.dart';
-import 'package:flutter_grocery/helper/route_helper.dart';
-import 'package:flutter_grocery/localization/language_constrants.dart';
-import 'package:flutter_grocery/provider/auth_provider.dart';
-import 'package:flutter_grocery/utill/color_resources.dart';
-import 'package:flutter_grocery/utill/dimensions.dart';
-import 'package:flutter_grocery/utill/images.dart';
-import 'package:flutter_grocery/utill/styles.dart';
-import 'package:flutter_grocery/view/base/custom_button.dart';
-import 'package:flutter_grocery/view/base/custom_snackbar.dart';
-import 'package:flutter_grocery/view/base/custom_text_field.dart';
-import 'package:flutter_grocery/view/base/main_app_bar.dart';
-import 'package:flutter_grocery/view/screens/auth/signup_screen.dart';
-import 'package:flutter_grocery/view/screens/forgot_password/forgot_password_screen.dart';
-import 'package:flutter_grocery/view/screens/menu/menu_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:recyminer_app/helper/email_checker.dart';
+import 'package:recyminer_app/helper/responsive_helper.dart';
+import 'package:recyminer_app/helper/route_helper.dart';
+import 'package:recyminer_app/localization/language_constrants.dart';
+import 'package:recyminer_app/provider/auth_provider.dart';
+import 'package:recyminer_app/provider/profile_provider.dart';
+import 'package:recyminer_app/utill/color_resources.dart';
+import 'package:recyminer_app/utill/dimensions.dart';
+import 'package:recyminer_app/utill/images.dart';
+import 'package:recyminer_app/utill/styles.dart';
+import 'package:recyminer_app/view/base/custom_button.dart';
+import 'package:recyminer_app/view/base/custom_snackbar.dart';
+import 'package:recyminer_app/view/base/custom_text_field.dart';
+import 'package:recyminer_app/view/base/main_app_bar.dart';
+import 'package:recyminer_app/view/screens/auth/signup_screen.dart';
+import 'package:recyminer_app/view/screens/forgot_password/forgot_password_screen.dart';
+import 'package:recyminer_app/view/screens/menu/menu_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -23,7 +24,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   FocusNode _emailFocus = FocusNode();
   FocusNode _passwordFocus = FocusNode();
   TextEditingController _emailController;
@@ -37,8 +37,12 @@ class _LoginScreenState extends State<LoginScreen> {
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
 
-    _emailController.text = Provider.of<AuthProvider>(context, listen: false).getUserNumber() ?? null;
-    _passwordController.text = Provider.of<AuthProvider>(context, listen: false).getUserPassword() ?? null;
+    _emailController.text =
+        Provider.of<AuthProvider>(context, listen: false).getUserNumber() ??
+            null;
+    _passwordController.text =
+        Provider.of<AuthProvider>(context, listen: false).getUserPassword() ??
+            null;
   }
 
   @override
@@ -51,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ResponsiveHelper.isDesktop(context)? MainAppBar():null,
+      appBar: ResponsiveHelper.isDesktop(context) ? MainAppBar() : null,
       body: SafeArea(
         child: Scrollbar(
           child: SingleChildScrollView(
@@ -64,8 +68,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   builder: (context, authProvider, child) => Form(
                     key: _formKeyLogin,
                     child: Column(
-                     crossAxisAlignment: CrossAxisAlignment.start,
-                    //  physics: BouncingScrollPhysics(),
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      //  physics: BouncingScrollPhysics(),
                       children: [
                         //SizedBox(height: 30),
                         Center(
@@ -79,14 +83,18 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         //SizedBox(height: 20),
-                        Center(child: Text(
-                          getTranslated('login', context),
-                          style: poppinsMedium.copyWith(fontSize: 24, color: ColorResources.getTextColor(context)),
-                        )),
+//                        Center(
+//                            child: Text(
+//                          getTranslated('login', context),
+//                          style: poppinsMedium.copyWith(
+//                              fontSize: 24,
+//                              color: ColorResources.getTextColor(context)),
+//                        )),
                         SizedBox(height: 35),
                         Text(
                           getTranslated('email', context),
-                          style: poppinsRegular.copyWith(color: ColorResources.getHintColor(context)),
+                          style: poppinsRegular.copyWith(
+                              color: ColorResources.getHintColor(context)),
                         ),
                         SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                         CustomTextField(
@@ -100,7 +108,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
                         Text(
                           getTranslated('password', context),
-                          style: poppinsRegular.copyWith(color: ColorResources.getHintColor(context)),
+                          style: poppinsRegular.copyWith(
+                              color: ColorResources.getHintColor(context)),
                         ),
                         SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                         CustomTextField(
@@ -123,27 +132,44 @@ class _LoginScreenState extends State<LoginScreen> {
                                 authProvider.toggleRememberMe();
                               },
                               child: Padding(
-                                padding: EdgeInsets.all(Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                                padding: EdgeInsets.all(
+                                    Dimensions.PADDING_SIZE_EXTRA_SMALL),
                                 child: Row(
                                   children: [
                                     Container(
-                                      width: 18, height: 18,
+                                      width: 18,
+                                      height: 18,
                                       decoration: BoxDecoration(
-                                        color: authProvider.isActiveRememberMe ? Theme.of(context).primaryColor : ColorResources.getCardBgColor(context),
-                                        border: Border.all(color: authProvider.isActiveRememberMe ? Colors.transparent : Theme.of(context).primaryColor),
+                                        color: authProvider.isActiveRememberMe
+                                            ? Theme.of(context).primaryColor
+                                            : ColorResources.getCardBgColor(
+                                                context),
+                                        border: Border.all(
+                                            color:
+                                                authProvider.isActiveRememberMe
+                                                    ? Colors.transparent
+                                                    : Theme.of(context)
+                                                        .primaryColor),
                                         borderRadius: BorderRadius.circular(3),
                                       ),
                                       child: authProvider.isActiveRememberMe
-                                          ? Icon(Icons.done, color: Colors.white, size: 17)
+                                          ? Icon(Icons.done,
+                                              color: Colors.white, size: 17)
                                           : SizedBox.shrink(),
                                     ),
-                                    SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
+                                    SizedBox(
+                                        width: Dimensions.PADDING_SIZE_SMALL),
                                     Text(
                                       getTranslated('remember_me', context),
                                       style: Theme.of(context)
                                           .textTheme
                                           .headline2
-                                          .copyWith(fontSize: Dimensions.FONT_SIZE_EXTRA_SMALL, color: ColorResources.getHintColor(context)),
+                                          .copyWith(
+                                              fontSize: Dimensions
+                                                  .FONT_SIZE_EXTRA_SMALL,
+                                              color:
+                                                  ColorResources.getHintColor(
+                                                      context)),
                                     )
                                   ],
                                 ),
@@ -151,7 +177,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             InkWell(
                               onTap: () {
-                                Navigator.of(context).pushNamed(RouteHelper.forgetPassword, arguments: ForgotPasswordScreen());
+                                Navigator.of(context).pushNamed(
+                                    RouteHelper.forgetPassword,
+                                    arguments: ForgotPasswordScreen());
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
@@ -160,7 +188,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                   style: Theme.of(context)
                                       .textTheme
                                       .headline2
-                                      .copyWith(fontSize: Dimensions.FONT_SIZE_SMALL, color: ColorResources.getHintColor(context)),
+                                      .copyWith(
+                                          fontSize: Dimensions.FONT_SIZE_SMALL,
+                                          color: ColorResources.getHintColor(
+                                              context)),
                                 ),
                               ),
                             )
@@ -172,13 +203,19 @@ class _LoginScreenState extends State<LoginScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             authProvider.loginErrorMessage.length > 0
-                                ? CircleAvatar(backgroundColor: Theme.of(context).primaryColor, radius: 5)
+                                ? CircleAvatar(
+                                    backgroundColor:
+                                        Theme.of(context).primaryColor,
+                                    radius: 5)
                                 : SizedBox.shrink(),
                             SizedBox(width: 8),
                             Expanded(
                               child: Text(
                                 authProvider.loginErrorMessage ?? "",
-                                style: Theme.of(context).textTheme.headline2.copyWith(
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline2
+                                    .copyWith(
                                       fontSize: Dimensions.FONT_SIZE_SMALL,
                                       color: Theme.of(context).primaryColor,
                                     ),
@@ -191,43 +228,72 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(height: 10),
                         !authProvider.isLoading
                             ? CustomButton(
-                          buttonText: getTranslated('login', context),
-                          onPressed: () async {
-                            String _email = _emailController.text.trim();
-                            String _password = _passwordController.text.trim();
-                            if (_email.isEmpty) {
-                              showCustomSnackBar(getTranslated('enter_email_address', context), context);
-                            }else if (EmailChecker.isNotValid(_email)) {
-                              showCustomSnackBar(getTranslated('enter_valid_email', context), context);
-                            }else if (_password.isEmpty) {
-                              showCustomSnackBar(getTranslated('enter_password', context), context);
-                            }else if (_password.length < 6) {
-                              showCustomSnackBar(getTranslated('password_should_be', context), context);
-                            }else {
-                              authProvider.login(_email, _password).then((status) async {
-                                if (status.isSuccess) {
-
-                                  if (authProvider.isActiveRememberMe) {
-                                    authProvider.saveUserNumberAndPassword(_email, _password);
+                                buttonText: getTranslated('login', context),
+                                onPressed: () async {
+                                  String _email = _emailController.text.trim();
+                                  String _password =
+                                      _passwordController.text.trim();
+                                  if (_email.isEmpty) {
+                                    showCustomSnackBar(
+                                        getTranslated(
+                                            'enter_email_address', context),
+                                        context);
+                                  } else if (EmailChecker.isNotValid(_email)) {
+                                    showCustomSnackBar(
+                                        getTranslated(
+                                            'enter_valid_email', context),
+                                        context);
+                                  } else if (_password.isEmpty) {
+                                    showCustomSnackBar(
+                                        getTranslated(
+                                            'enter_password', context),
+                                        context);
+                                  } else if (_password.length < 6) {
+                                    showCustomSnackBar(
+                                        getTranslated(
+                                            'password_should_be', context),
+                                        context);
                                   } else {
-                                    authProvider.clearUserNumberAndPassword();
-                                  }
-                                  Navigator.pushNamedAndRemoveUntil(context, RouteHelper.menu, (route) => false, arguments: MenuScreen());
-                                }
-                              });
-                            }
-                          },
-                        ) : Center(
-                            child: CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
-                            )),
+                                    authProvider
+                                        .login(_email, _password)
+                                        .then((status) async {
+                                      if (status.isSuccess) {
+                                        //ProfileProvider
+                                        await Provider.of<ProfileProvider>(
+                                                context,
+                                                listen: false)
+                                            .getUserInfo(context);
 
+                                        if (authProvider.isActiveRememberMe) {
+                                          authProvider
+                                              .saveUserNumberAndPassword(
+                                                  _email, _password);
+                                        } else {
+                                          authProvider
+                                              .clearUserNumberAndPassword();
+                                        }
+                                        Navigator.pushNamedAndRemoveUntil(
+                                            context,
+                                            RouteHelper.menu,
+                                            (route) => false,
+                                            arguments: MenuScreen());
+                                      }
+                                    });
+                                  }
+                                },
+                              )
+                            : Center(
+                                child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    Theme.of(context).primaryColor),
+                              )),
 
                         // for create an account
                         SizedBox(height: 20),
                         InkWell(
                           onTap: () {
-                            Navigator.of(context).pushNamed(RouteHelper.signUp, arguments: SignUpScreen());
+                            Navigator.of(context).pushNamed(RouteHelper.signUp,
+                                arguments: SignUpScreen());
                           },
                           child: Padding(
                             padding: EdgeInsets.all(8.0),
@@ -236,34 +302,56 @@ class _LoginScreenState extends State<LoginScreen> {
                               children: [
                                 Text(
                                   getTranslated('create_an_account', context),
-                                  style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_SMALL, color: ColorResources.getHintColor(context)),
+                                  style: poppinsRegular.copyWith(
+                                      fontSize: Dimensions.FONT_SIZE_SMALL,
+                                      color:
+                                          ColorResources.getHintColor(context)),
                                 ),
                                 SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
                                 Text(
                                   getTranslated('signup', context),
-                                  style: poppinsMedium.copyWith(fontSize: Dimensions.FONT_SIZE_SMALL, color: ColorResources.getTextColor(context)),
+                                  style: poppinsMedium.copyWith(
+                                      fontSize: Dimensions.FONT_SIZE_SMALL,
+                                      color:
+                                          ColorResources.getTextColor(context)),
                                 ),
                               ],
                             ),
                           ),
                         ),
-
-                        Center(child: Text(getTranslated('OR', context), style: poppinsRegular.copyWith(fontSize: 12))),
-
-                        Center(
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                              minimumSize: Size(1, 40),
-                            ),
-                            onPressed: () {
-                              Navigator.pushReplacementNamed(context, RouteHelper.menu, arguments: MenuScreen());
-                            },
-                            child: RichText(text: TextSpan(children: [
-                              TextSpan(text: '${getTranslated('login_as_a', context)} ',  style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_SMALL, color: ColorResources.getHintColor(context))),
-                              TextSpan(text: getTranslated('guest', context), style: poppinsRegular.copyWith(color: Theme.of(context).textTheme.bodyText1.color)),
-                            ])),
-                          ),
-                        ),
+//                        Center(
+//                            child: Text(getTranslated('OR', context),
+//                                style: poppinsRegular.copyWith(fontSize: 12))),
+//
+//                        Center(
+//                          child: TextButton(
+//                            style: TextButton.styleFrom(
+//                              minimumSize: Size(1, 40),
+//                            ),
+//                            onPressed: () {
+//                              Navigator.pushReplacementNamed(
+//                                  context, RouteHelper.menu,
+//                                  arguments: MenuScreen());
+//                            },
+//                            child: RichText(
+//                                text: TextSpan(children: [
+//                              TextSpan(
+//                                  text:
+//                                      '${getTranslated('login_as_a', context)} ',
+//                                  style: poppinsRegular.copyWith(
+//                                      fontSize: Dimensions.FONT_SIZE_SMALL,
+//                                      color: ColorResources.getHintColor(
+//                                          context))),
+//                              TextSpan(
+//                                  text: getTranslated('guest', context),
+//                                  style: poppinsRegular.copyWith(
+//                                      color: Theme.of(context)
+//                                          .textTheme
+//                                          .bodyText1
+//                                          .color)),
+//                            ])),
+//                          ),
+//                        ),
                       ],
                     ),
                   ),

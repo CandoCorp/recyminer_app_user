@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_grocery/provider/theme_provider.dart';
+import 'package:recyminer_app/provider/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 class ColorResources {

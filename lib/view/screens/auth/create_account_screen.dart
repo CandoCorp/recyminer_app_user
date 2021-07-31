@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_grocery/data/model/response/signup_model.dart';
-import 'package:flutter_grocery/helper/responsive_helper.dart';
-import 'package:flutter_grocery/helper/route_helper.dart';
-import 'package:flutter_grocery/localization/language_constrants.dart';
-import 'package:flutter_grocery/provider/auth_provider.dart';
-import 'package:flutter_grocery/utill/color_resources.dart';
-import 'package:flutter_grocery/utill/dimensions.dart';
-import 'package:flutter_grocery/utill/styles.dart';
-import 'package:flutter_grocery/view/base/custom_button.dart';
-import 'package:flutter_grocery/view/base/custom_snackbar.dart';
-import 'package:flutter_grocery/view/base/custom_text_field.dart';
-import 'package:flutter_grocery/view/base/main_app_bar.dart';
-import 'package:flutter_grocery/view/screens/auth/login_screen.dart';
-import 'package:flutter_grocery/view/screens/menu/menu_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:recyminer_app/data/model/response/signup_model.dart';
+import 'package:recyminer_app/helper/responsive_helper.dart';
+import 'package:recyminer_app/helper/route_helper.dart';
+import 'package:recyminer_app/localization/language_constrants.dart';
+import 'package:recyminer_app/provider/auth_provider.dart';
+import 'package:recyminer_app/utill/color_resources.dart';
+import 'package:recyminer_app/utill/dimensions.dart';
+import 'package:recyminer_app/utill/styles.dart';
+import 'package:recyminer_app/view/base/custom_button.dart';
+import 'package:recyminer_app/view/base/custom_snackbar.dart';
+import 'package:recyminer_app/view/base/custom_text_field.dart';
+import 'package:recyminer_app/view/base/main_app_bar.dart';
+import 'package:recyminer_app/view/screens/auth/login_screen.dart';
+import 'package:recyminer_app/view/screens/menu/menu_screen.dart';
 
 class CreateAccountScreen extends StatelessWidget {
   final FocusNode _firstNameFocus = FocusNode();
@@ -26,13 +26,13 @@ class CreateAccountScreen extends StatelessWidget {
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _numberController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      appBar: ResponsiveHelper.isDesktop(context)? MainAppBar():null,
+      appBar: ResponsiveHelper.isDesktop(context) ? MainAppBar() : null,
       body: Consumer<AuthProvider>(
         builder: (context, authProvider, child) => SafeArea(
           child: Scrollbar(
@@ -48,15 +48,18 @@ class CreateAccountScreen extends StatelessWidget {
                       SizedBox(height: 30),
                       Center(
                           child: Text(
-                            getTranslated('create_account', context),
-                            style: poppinsMedium.copyWith(fontSize: 24, color: ColorResources.getTextColor(context)),
-                          )),
+                        getTranslated('create_account', context),
+                        style: poppinsMedium.copyWith(
+                            fontSize: 24,
+                            color: ColorResources.getTextColor(context)),
+                      )),
                       SizedBox(height: 30),
 
                       // for first name section
                       Text(
                         getTranslated('first_name', context),
-                        style: poppinsRegular.copyWith(color: ColorResources.getHintColor(context)),
+                        style: poppinsRegular.copyWith(
+                            color: ColorResources.getHintColor(context)),
                       ),
                       SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                       CustomTextField(
@@ -73,7 +76,8 @@ class CreateAccountScreen extends StatelessWidget {
                       // for last name section
                       Text(
                         getTranslated('last_name', context),
-                        style: poppinsRegular.copyWith(color: ColorResources.getHintColor(context)),
+                        style: poppinsRegular.copyWith(
+                            color: ColorResources.getHintColor(context)),
                       ),
                       SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                       CustomTextField(
@@ -90,7 +94,8 @@ class CreateAccountScreen extends StatelessWidget {
                       // for email section
                       Text(
                         getTranslated('mobile_number', context),
-                        style: poppinsRegular.copyWith(color: ColorResources.getHintColor(context)),
+                        style: poppinsRegular.copyWith(
+                            color: ColorResources.getHintColor(context)),
                       ),
                       SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                       CustomTextField(
@@ -106,7 +111,8 @@ class CreateAccountScreen extends StatelessWidget {
                       // for password section
                       Text(
                         getTranslated('password', context),
-                        style: poppinsRegular.copyWith(color: ColorResources.getHintColor(context)),
+                        style: poppinsRegular.copyWith(
+                            color: ColorResources.getHintColor(context)),
                       ),
                       SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                       CustomTextField(
@@ -123,7 +129,8 @@ class CreateAccountScreen extends StatelessWidget {
                       // for confirm password section
                       Text(
                         getTranslated('confirm_password', context),
-                        style: poppinsRegular.copyWith(color: ColorResources.getHintColor(context)),
+                        style: poppinsRegular.copyWith(
+                            color: ColorResources.getHintColor(context)),
                       ),
                       SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                       CustomTextField(
@@ -141,7 +148,10 @@ class CreateAccountScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           authProvider.registrationErrorMessage.length > 0
-                              ? CircleAvatar(backgroundColor: Theme.of(context).primaryColor, radius: 5)
+                              ? CircleAvatar(
+                                  backgroundColor:
+                                      Theme.of(context).primaryColor,
+                                  radius: 5)
                               : SizedBox.shrink(),
                           SizedBox(width: 8),
                           Expanded(
@@ -160,52 +170,83 @@ class CreateAccountScreen extends StatelessWidget {
                       SizedBox(height: 10),
                       !authProvider.isLoading
                           ? CustomButton(
-                        buttonText: getTranslated('signup', context),
-                        onPressed: () {
-                          String _firstName = _firstNameController.text.trim();
-                          String _lastName = _lastNameController.text.trim();
-                          String _number = _numberController.text.trim();
-                          String _password = _passwordController.text.trim();
-                          String _confirmPassword = _confirmPasswordController.text.trim();
-                          if (_firstName.isEmpty) {
-                            showCustomSnackBar(getTranslated('enter_first_name', context), context);
-                          }else if (_lastName.isEmpty) {
-                            showCustomSnackBar(getTranslated('enter_last_name', context), context);
-                          }else if (_number.isEmpty) {
-                            showCustomSnackBar(getTranslated('enter_phone_number', context), context);
-                          }else if (_password.isEmpty) {
-                            showCustomSnackBar(getTranslated('enter_password', context), context);
-                          }else if (_password.length < 6) {
-                            showCustomSnackBar(getTranslated('password_should_be', context), context);
-                          }else if (_confirmPassword.isEmpty) {
-                            showCustomSnackBar(getTranslated('enter_confirm_password', context), context);
-                          }else if(_password != _confirmPassword) {
-                            showCustomSnackBar(getTranslated('password_did_not_match', context), context);
-                          }else {
-                            SignUpModel signUpModel = SignUpModel(
-                              fName: _firstName,
-                              lName: _lastName,
-                              email: authProvider.email,
-                              password: _password,
-                              phone: _number,
-                            );
-                            authProvider.registration(signUpModel).then((status) async {
-                              if (status.isSuccess) {
-                                Navigator.pushNamedAndRemoveUntil(context, RouteHelper.menu, (route) => false, arguments: MenuScreen());
-                              }
-                            });
-                          }
-                        },
-                      ) : Center(
-                          child: CircularProgressIndicator(
-                            valueColor: new AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
-                          )),
+                              buttonText: getTranslated('signup', context),
+                              onPressed: () {
+                                String _firstName =
+                                    _firstNameController.text.trim();
+                                String _lastName =
+                                    _lastNameController.text.trim();
+                                String _number = _numberController.text.trim();
+                                String _password =
+                                    _passwordController.text.trim();
+                                String _confirmPassword =
+                                    _confirmPasswordController.text.trim();
+                                if (_firstName.isEmpty) {
+                                  showCustomSnackBar(
+                                      getTranslated(
+                                          'enter_first_name', context),
+                                      context);
+                                } else if (_lastName.isEmpty) {
+                                  showCustomSnackBar(
+                                      getTranslated('enter_last_name', context),
+                                      context);
+                                } else if (_number.isEmpty) {
+                                  showCustomSnackBar(
+                                      getTranslated(
+                                          'enter_phone_number', context),
+                                      context);
+                                } else if (_password.isEmpty) {
+                                  showCustomSnackBar(
+                                      getTranslated('enter_password', context),
+                                      context);
+                                } else if (_password.length < 6) {
+                                  showCustomSnackBar(
+                                      getTranslated(
+                                          'password_should_be', context),
+                                      context);
+                                } else if (_confirmPassword.isEmpty) {
+                                  showCustomSnackBar(
+                                      getTranslated(
+                                          'enter_confirm_password', context),
+                                      context);
+                                } else if (_password != _confirmPassword) {
+                                  showCustomSnackBar(
+                                      getTranslated(
+                                          'password_did_not_match', context),
+                                      context);
+                                } else {
+                                  SignUpModel signUpModel = SignUpModel(
+                                    fName: _firstName,
+                                    lName: _lastName,
+                                    email: authProvider.email,
+                                    password: _password,
+                                    phone: _number,
+                                  );
+                                  authProvider
+                                      .registration(signUpModel)
+                                      .then((status) async {
+                                    if (status.isSuccess) {
+                                      Navigator.pushNamedAndRemoveUntil(context,
+                                          RouteHelper.menu, (route) => false,
+                                          arguments: MenuScreen());
+                                    }
+                                  });
+                                }
+                              },
+                            )
+                          : Center(
+                              child: CircularProgressIndicator(
+                              valueColor: new AlwaysStoppedAnimation<Color>(
+                                  Theme.of(context).primaryColor),
+                            )),
 
                       // for already an account
                       SizedBox(height: 11),
                       InkWell(
                         onTap: () {
-                          Navigator.of(context).pushReplacementNamed(RouteHelper.login, arguments: LoginScreen());
+                          Navigator.of(context).pushReplacementNamed(
+                              RouteHelper.login,
+                              arguments: LoginScreen());
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -214,12 +255,18 @@ class CreateAccountScreen extends StatelessWidget {
                             children: [
                               Text(
                                 getTranslated('already_have_account', context),
-                                style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_SMALL, color: ColorResources.getHintColor(context)),
+                                style: poppinsRegular.copyWith(
+                                    fontSize: Dimensions.FONT_SIZE_SMALL,
+                                    color:
+                                        ColorResources.getHintColor(context)),
                               ),
                               SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
                               Text(
                                 getTranslated('login', context),
-                                style: poppinsMedium.copyWith(fontSize: Dimensions.FONT_SIZE_SMALL, color: ColorResources.getTextColor(context)),
+                                style: poppinsMedium.copyWith(
+                                    fontSize: Dimensions.FONT_SIZE_SMALL,
+                                    color:
+                                        ColorResources.getTextColor(context)),
                               ),
                             ],
                           ),

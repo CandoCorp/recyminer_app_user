@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_grocery/localization/language_constrants.dart';
-import 'package:flutter_grocery/utill/images.dart';
-import 'package:flutter_grocery/view/screens/address/address_screen.dart';
-import 'package:flutter_grocery/view/screens/cart/cart_screen.dart';
-import 'package:flutter_grocery/view/screens/category/all_category_screen.dart';
-import 'package:flutter_grocery/view/screens/chat/chat_screen.dart';
-import 'package:flutter_grocery/view/screens/coupon/coupon_screen.dart';
-import 'package:flutter_grocery/view/screens/home/home_screen.dart';
-import 'package:flutter_grocery/view/screens/order/my_order_screen.dart';
-import 'package:flutter_grocery/view/screens/settings/setting_screen.dart';
+import 'package:recyminer_app/localization/language_constrants.dart';
+import 'package:recyminer_app/utill/images.dart';
+import 'package:recyminer_app/view/screens/address/address_screen.dart';
+import 'package:recyminer_app/view/screens/cart/cart_screen.dart';
+import 'package:recyminer_app/view/screens/category/all_category_screen.dart';
+import 'package:recyminer_app/view/screens/chat/chat_screen.dart';
+import 'package:recyminer_app/view/screens/coupon/coupon_screen.dart';
+import 'package:recyminer_app/view/screens/home/home_screen.dart';
+import 'package:recyminer_app/view/screens/order/my_order_screen.dart';
+import 'package:recyminer_app/view/screens/settings/setting_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -58,13 +58,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
           type: BottomNavigationBarType.fixed,
           items: [
             _barItem(Images.home, getTranslated('home', context), 0),
-            _barItem(Images.list, getTranslated('all_categories', context), 1),
-            _barItem(Images.order_bag, getTranslated('shopping_bag', context), 2),
-            _barItem(Images.order_list, getTranslated('my_order', context), 3),
-            _barItem(Images.location, getTranslated('address', context), 4),
-            _barItem(Images.coupon, getTranslated('coupon', context), 5),
-            _barItem(Images.chat, getTranslated('live_chat', context), 6),
-            _barItem(Images.settings, getTranslated('settings', context), 7),
+            _barItem(Images.list, getTranslated('call_miner', context), 1),
+            //_barItem(Images.order_bag, getTranslated('shopping_bag', context), 2),
+            _barItem(Images.order_list, getTranslated('my_order', context), 2),
+            _barItem(Images.location, getTranslated('address', context), 3),
+            //_barItem(Images.coupon, getTranslated('coupon', context), 4),
+            _barItem(Images.chat, getTranslated('live_chat', context), 4),
+            _barItem(Images.settings, getTranslated('settings', context), 5),
           ],
           onTap: (int index) {
             _setPage(index);
@@ -84,7 +84,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   BottomNavigationBarItem _barItem(String icon, String label, int index) {
     return BottomNavigationBarItem(
-      icon: Image.asset(icon, color: index == _pageIndex ? Theme.of(context).primaryColor : Colors.grey, width: 25),
+      icon: Image.asset(icon,
+          color: index == _pageIndex
+              ? Theme.of(context).primaryColor
+              : Colors.grey,
+          width: 25),
       label: label,
     );
   }

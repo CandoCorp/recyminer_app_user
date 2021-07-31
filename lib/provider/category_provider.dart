@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_grocery/data/model/response/base/api_response.dart';
-import 'package:flutter_grocery/data/model/response/category_model.dart';
-import 'package:flutter_grocery/data/model/response/product_model.dart';
-import 'package:flutter_grocery/data/repository/category_repo.dart';
-import 'package:flutter_grocery/helper/api_checker.dart';
+import 'package:recyminer_app/data/model/response/base/api_response.dart';
+import 'package:recyminer_app/data/model/response/category_model.dart';
+import 'package:recyminer_app/data/model/response/product_model.dart';
+import 'package:recyminer_app/data/repository/category_repo.dart';
+import 'package:recyminer_app/helper/api_checker.dart';
 
 class CategoryProvider extends ChangeNotifier {
   final CategoryRepo categoryRepo;
@@ -27,11 +27,14 @@ class CategoryProvider extends ChangeNotifier {
   List<Product> get categoryProductList => _categoryProductList;
   CategoryModel get categoryModel => _categoryModel;
 
-  Future<void> getCategoryList(BuildContext context, bool reload, {int id}) async {
+  Future<void> getCategoryList(BuildContext context, bool reload,
+      {int id}) async {
     ApiResponse apiResponse = await categoryRepo.getCategoryList();
-    if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
+    if (apiResponse.response != null &&
+        apiResponse.response.statusCode == 200) {
       _categoryList = [];
-      apiResponse.response.data.forEach((category) => _categoryList.add(CategoryModel.fromJson(category)));
+      apiResponse.response.data.forEach(
+          (category) => _categoryList.add(CategoryModel.fromJson(category)));
       _categorySelectedIndex = 0;
     } else {
       ApiChecker.checkApi(context, apiResponse);
@@ -40,12 +43,14 @@ class CategoryProvider extends ChangeNotifier {
   }
 
   void getCategory(int id, BuildContext context) async {
-    if(_categoryList == null) {
+    if (_categoryList == null) {
       await getCategoryList(context, true);
-      _categoryModel = _categoryList.firstWhere((category) => category.id == id);
+      _categoryModel =
+          _categoryList.firstWhere((category) => category.id == id);
       notifyListeners();
-    }else {
-      _categoryModel = _categoryList.firstWhere((category) => category.id == id);
+    } else {
+      _categoryModel =
+          _categoryList.firstWhere((category) => category.id == id);
     }
   }
 
@@ -53,9 +58,11 @@ class CategoryProvider extends ChangeNotifier {
     _subCategoryList = null;
 
     ApiResponse apiResponse = await categoryRepo.getSubCategoryList(categoryID);
-    if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
+    if (apiResponse.response != null &&
+        apiResponse.response.statusCode == 200) {
       _subCategoryList = [];
-      apiResponse.response.data.forEach((category) => _subCategoryList.add(CategoryModel.fromJson(category)));
+      apiResponse.response.data.forEach(
+          (category) => _subCategoryList.add(CategoryModel.fromJson(category)));
       getCategoryProductList(context, categoryID);
     } else {
       ApiChecker.checkApi(context, apiResponse);
@@ -66,10 +73,13 @@ class CategoryProvider extends ChangeNotifier {
   void getCategoryProductList(BuildContext context, String categoryID) async {
     _categoryProductList = [];
 
-    ApiResponse apiResponse = await categoryRepo.getCategoryProductList(categoryID);
-    if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
+    ApiResponse apiResponse =
+        await categoryRepo.getCategoryProductList(categoryID);
+    if (apiResponse.response != null &&
+        apiResponse.response.statusCode == 200) {
       _categoryProductList = [];
-      apiResponse.response.data.forEach((category) => _categoryProductList.add(Product.fromJson(category)));
+      apiResponse.response.data.forEach(
+          (category) => _categoryProductList.add(Product.fromJson(category)));
       _categoryAllProductList.addAll(_categoryProductList);
     } else {
       ApiChecker.checkApi(context, apiResponse);
@@ -88,7 +98,7 @@ class CategoryProvider extends ChangeNotifier {
 
   void changeSelectedIndex(int selectedIndex, {bool notify = true}) {
     _categorySelectedIndex = selectedIndex;
-    if(notify) {
+    if (notify) {
       notifyListeners();
     }
   }
@@ -96,5 +106,4 @@ class CategoryProvider extends ChangeNotifier {
   void setFilterIndex(int selectedIndex) {
     _filterIndex = selectedIndex;
   }
-
 }

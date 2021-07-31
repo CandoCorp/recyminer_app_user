@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_grocery/data/model/response/onboarding_model.dart';
-import 'package:flutter_grocery/utill/dimensions.dart';
-import 'package:flutter_grocery/utill/styles.dart';
+import 'package:recyminer_app/data/model/response/onboarding_model.dart';
+import 'package:recyminer_app/utill/dimensions.dart';
+import 'package:recyminer_app/utill/styles.dart';
 
 class OnBoardingWidget extends StatelessWidget {
   final OnBoardingModel onBoardingModel;
@@ -10,12 +10,12 @@ class OnBoardingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-
-      Expanded(flex: 7, child: Padding(
-        padding: EdgeInsets.all(Dimensions.PADDING_SIZE_EXTRA_LARGE),
-        child: Image.asset(onBoardingModel.imageUrl),
-      )),
-
+      Expanded(
+          flex: 7,
+          child: Padding(
+            padding: EdgeInsets.all(Dimensions.PADDING_SIZE_EXTRA_LARGE),
+            child: Image.asset(onBoardingModel.imageUrl),
+          )),
       Expanded(
         flex: 1,
         child: Text(
@@ -27,7 +27,6 @@ class OnBoardingWidget extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
       ),
-
       Expanded(
         flex: 2,
         child: Text(
@@ -38,7 +37,6 @@ class OnBoardingWidget extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
       )
-
     ]);
   }
 }

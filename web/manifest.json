@@ -1,6 +1,6 @@
 {
-    "name": "flutter_grocery",
-    "short_name": "flutter_grocery",
+    "name": "recyminer_app",
+    "short_name": "recyminer_app",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -37,9 +37,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:972498452470:android:49ed4bf7e78b0ee1bd11d7",
+        "mobilesdk_app_id": "1:972498452470:android:ace8a69d2f2cef11bd11d7",
         "android_client_info": {
-          "package_name": "com.u6amtech.recyminer_app"
+          "package_name": "com.recyminer.miner"
         }
       },
       "oauth_client": [

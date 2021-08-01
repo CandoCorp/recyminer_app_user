@@ -55,7 +55,7 @@ class CategoryProvider extends ChangeNotifier {
   }
 
   void getSubCategoryList(BuildContext context, String categoryID) async {
-    _subCategoryList = null;
+    _subCategoryList = [];
 
     ApiResponse apiResponse = await categoryRepo.getSubCategoryList(categoryID);
     if (apiResponse.response != null &&

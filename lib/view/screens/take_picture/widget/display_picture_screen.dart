@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recyminer_app/provider/ibm_cloud_provider.dart';
-import 'package:recyminer_app/provider/reward_provider.dart';
 import 'package:recyminer_app/utill/dimensions.dart';
 import 'package:recyminer_app/utill/styles.dart';
 import 'package:recyminer_app/view/base/custom_app_bar.dart';
@@ -51,9 +50,9 @@ class DisplayPictureScreen extends StatelessWidget {
                                             listen: false)
                                         .uploadPhoto(file);
 
-                                await Provider.of<RewardProvider>(context,
-                                        listen: false)
-                                    .getPoints();
+                                //await Provider.of<RewardProvider>(context,
+                                //        listen: false)
+                                //    .getPoints();
 
                                 isLoading = false;
 

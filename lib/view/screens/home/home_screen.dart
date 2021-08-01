@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recyminer_app/helper/route_helper.dart';
 import 'package:recyminer_app/localization/language_constrants.dart';
+import 'package:recyminer_app/provider/category_provider.dart';
 import 'package:recyminer_app/provider/reward_provider.dart';
 import 'package:recyminer_app/provider/splash_provider.dart';
 import 'package:recyminer_app/provider/statistics_provider.dart';
@@ -23,12 +24,12 @@ class OrdinalSales {
 class HomeScreen extends StatelessWidget {
   int points = 0;
   Future<void> _loadData(BuildContext context, bool reload) async {
-//    await Provider.of<CategoryProvider>(context, listen: false)
-//        .getCategoryList(context, reload);
+    await Provider.of<CategoryProvider>(context, listen: false)
+        .getCategoryList(context, reload);
     await Provider.of<StatisticsProvider>(context, listen: false)
         .getStatistics();
 
-    points = Provider.of<RewardProvider>(context, listen: true).points;
+    points = Provider.of<RewardProvider>(context, listen: false).points;
   }
 
   @override

@@ -16,7 +16,13 @@ import 'package:recyminer_app/view/screens/product/new_product_screen.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 
 // ignore: must_be_immutable
-class AllCategoryScreen extends StatelessWidget {
+
+class AllCategoryScreen extends StatefulWidget {
+  @override
+  _AllCategoryScreen createState() => new _AllCategoryScreen();
+}
+
+class _AllCategoryScreen extends State<AllCategoryScreen> {
   int flag = 0;
   @override
   Widget build(BuildContext context) {

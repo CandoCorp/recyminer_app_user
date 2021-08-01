@@ -4,7 +4,6 @@ import 'package:recyminer_app/data/datasource/remote/dio/dio_client.dart';
 import 'package:recyminer_app/data/datasource/remote/exception/api_error_handler.dart';
 import 'package:recyminer_app/data/model/response/base/api_response.dart';
 import 'package:recyminer_app/data/model/response/onboarding_model.dart';
-import 'package:recyminer_app/localization/language_constrants.dart';
 import 'package:recyminer_app/utill/images.dart';
 
 class OnBoardingRepo {
@@ -15,18 +14,12 @@ class OnBoardingRepo {
   Future<ApiResponse> getOnBoardingList(BuildContext context) async {
     try {
       List<OnBoardingModel> onBoardingList = [
-        OnBoardingModel(
-            Images.on_boarding_1,
-            getTranslated('select_your_items_to_buy', context),
-            getTranslated('onboarding_1_text', context)),
-        OnBoardingModel(
-            Images.on_boarding_2,
-            getTranslated('order_item_from_your_shopping_bag', context),
-            getTranslated('onboarding_2_text', context)),
-        OnBoardingModel(
-            Images.on_boarding_3,
-            getTranslated('our_system_delivery_item_to_you', context),
-            getTranslated('onboarding_3_text', context)),
+        OnBoardingModel(Images.on_boarding_1, "Let's recycling",
+            "Recycle the things you dont  need"),
+        OnBoardingModel(Images.on_boarding_2, "Get points",
+            "Upload your invoices to get rewards"),
+        OnBoardingModel(Images.on_boarding_3, "Wait for the miner",
+            "The miner will be there to recollect the things you dont need"),
       ];
 
       Response response = Response(
